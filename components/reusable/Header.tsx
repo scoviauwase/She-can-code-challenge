@@ -4,7 +4,7 @@ import Head from 'next/head';
 const Header = ({ title }: Props) => {
   return (
     <Head>
-      <title>Simba {`  ${title ? `| ${title}` : ''}`}</title>
+      {title ? <title>Simba | {title}</title> : <title>Simba</title>}
       <meta name='viewport' content='initial-scale=1.0, width=device-width' />
     </Head>
   );
