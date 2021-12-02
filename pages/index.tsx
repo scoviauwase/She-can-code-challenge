@@ -4,11 +4,7 @@ import type { NextPage } from 'next';
 import Auth from './auth';
 
 const Home: NextPage = () => {
-  return (
-    <>
-      <Auth />
-    </>
-  );
+  return <Auth />;
 };
 
 export default Home;
