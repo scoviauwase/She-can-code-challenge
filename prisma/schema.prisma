@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int           @id @default(autoincrement())
+  name      String?
+  email     String        @unique
+  password  String
+  sender    Transaction[] @relation("sender") // one to many relation as a sender
+  receiver  Transaction[] @relation("receiver") // one to many relation as a receiver
+  createdAt DateTime      @default(now()) @map(name: "created_at")
+  updatedAt DateTime      @updatedAt @map(name: "updated_at")
+}
+
+model Transaction {
+  id             Int      @id @default(autoincrement())
+  sender         User?     @relation("sender", fields: [senderId], references: [id])
+  senderId       Int?
+  receiver       User?     @relation("receiver", fields: [receiverId], references: [id])
+  receiverId     Int?
+  sourceCurrency Currency? @default(USD) @map(name: "source_currency")
+  targetCurrency Currency? @default(USD) @map(name: "target_currency")
+  exchangeRate   Decimal?  @map(name: "exchange_rate")
+  amount         Decimal?
+  usdBalance     Decimal?  @map(name: "usd_balance")
+  eurBalance     Decimal?  @map(name: "euro_balance")
+  ngnBalance     Decimal?  @map(name: "ngn_balance")
+  createdAt      DateTime @default(now()) @map(name: "created_at")
+  updatedAt      DateTime @updatedAt @map(name: "updated_at")
+}
+
+enum Currency {
+  USD
+  EUR
+  NGN
+}

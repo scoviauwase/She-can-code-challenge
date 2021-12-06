@@ -8,7 +8,7 @@ import Logo from '../../components/markup/Logo';
 
 import Logout from './Logout';
 
-const Sidebar = () => {
+const Sidebar = ({ count }: Props) => {
   return (
     <div className='h-screen w-2/12 border-r-2 border-r-black hidden md:flex flex-col justify-between items-start'>
       <div className='flex flex-col justify-start items-start px-5 py-5'>
@@ -28,7 +28,7 @@ const Sidebar = () => {
         />
         <NavLink
           icon={<AccountBalanceOutlinedIcon />}
-          count={5}
+          count={count ? count : 0}
           title='Transactions'
           onClick={() => Router.push('/dashboard/transactions')}
         />
@@ -37,5 +37,9 @@ const Sidebar = () => {
     </div>
   );
 };
+
+interface Props {
+  count?: number;
+}
 
 export default Sidebar;

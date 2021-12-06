@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Router from 'next/router';
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 
@@ -6,7 +6,13 @@ import Sidebar from '../../components/markup/Sidebar';
 import Header from '../../components/reusable/Header';
 import Logout from '../../components/markup/Logout';
 
-const Dashboard = ({ children, title }: Props) => {
+const Dashboard = ({ children, title, count }: Props) => {
+  const [user, setUser] = useState('');
+  useEffect(() => {
+    if (localStorage.getItem('token') && localStorage.getItem('user')) {
+      setUser(`${localStorage.getItem('user')}`);
+    }
+  }, []);
   return (
     <>
       <Header title={title} />
@@ -28,12 +34,14 @@ const Dashboard = ({ children, title }: Props) => {
         </div>
 
         {/* End of logout handler */}
-        <Sidebar />
+        <Sidebar count={count ? count : 0} />
         <div className='h-screen w-10/12 flex flex-col justify-start md:items-start items-center'>
           {title === 'Dashboard' ? (
             <div className='hidden md:flex flex-row md:w-11/12 w-full md:justify-start justify-center items-center  mx-10 px-5 mb-5 mt-10'>
               <span>Welcome,</span>
-              <span className='font-bold'>John Doe.</span>
+              <span className='font-bold'>
+                {user ? user : 'FirstName LastName'}.
+              </span>
             </div>
           ) : (
             <div className='hidden md:flex flex-row md:w-11/12 w-full md:justify-start justify-center items-center  mx-10 px-5 mb-5 mt-10' />
@@ -48,6 +56,7 @@ const Dashboard = ({ children, title }: Props) => {
 interface Props {
   children?: any;
   title: string;
+  count?: number;
 }
 
 export default Dashboard;
