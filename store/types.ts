@@ -2,11 +2,14 @@ export interface AppState {
   errors: Error;
   transactions: Transaction;
   auth: Auth;
+  users: User;
 }
 
 export interface Transaction {
   transactions: any[];
   isLoading: boolean;
+  message: string;
+  success: boolean;
 }
 
 export interface Error {
@@ -18,4 +21,11 @@ export interface Auth {
   isLoading: boolean;
   token: string;
   user: any;
+  id: number;
+}
+
+export interface User {
+  users: [];
+  isLoading: boolean;
+  message: string;
 }

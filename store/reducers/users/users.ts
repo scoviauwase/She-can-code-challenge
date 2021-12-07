@@ -1,28 +1,20 @@
 import { types } from '../../actions/types';
-import { Transaction } from '../../types';
+import { User } from '../../types';
 
-const initialState: Transaction = {
+const initialState: User = {
   isLoading: false,
-  transactions: [],
+  users: [],
   message: '',
-  success: false,
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case types.GET_USERS_TRANSACTIONS:
+    case types.GET_ALL_RECEIVERS:
       return {
         ...state,
-        transactions: action.payload,
+        users: action.payload.data,
+        // message: action.payload.message,
         isLoading: false,
-        success: false,
-      };
-    case types.CREATE_TRANSACTION:
-      return {
-        ...state,
-        isLoading: false,
-        message: action.payload.message,
-        success: true,
       };
     case types.IS_LOADING:
       return {

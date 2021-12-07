@@ -25,10 +25,12 @@ const Transactions = () => {
     (state: AppState) => state.errors,
     shallowEqual,
   );
+  const { id } = useSelector((state: AppState) => state.auth, shallowEqual);
   useEffect(() => {
     dispatch(clearErrors());
     dispatch(getAllTransactions());
   }, []);
+
   return (
     <Dashboard title='Transactions' count={transactions.length}>
       {isLoading ? (
@@ -69,19 +71,41 @@ const Transactions = () => {
                     <TableRow key={transaction.id}>
                       <TableCell>{index + 1}</TableCell>
                       <TableCell>
-                        {transaction.senderId
+                        {transaction.sender !== undefined ||
+                        (null && Object.keys(transaction.sender).length)
                           ? transaction.sender['name']
-                          : 'Initial Transaction'}
+                          : null}
                       </TableCell>
                       <TableCell>
-                        {transaction.receiverId
+                        {transaction.receiver !== undefined ||
+                        (null && Object.keys(transaction.receiver).length)
                           ? transaction.receiver['name']
-                          : localStorage.getItem('user')}
+                          : null}
                       </TableCell>
                       <TableCell>
-                        {transaction.amount
-                          ? transaction.amount
-                          : transaction.usdBalance}
+                        {transaction.amount ? (
+                          transaction.sender !== undefined ||
+                          (null &&
+                            Object.keys(transaction.sender).length &&
+                            transaction.sender['id'] === id) ? (
+                            <b className='text-green-400'>
+                              - {transaction.amount}
+                            </b>
+                          ) : transaction.receiver !== undefined ||
+                            (null &&
+                              Object.keys(transaction.receiver).length &&
+                              transaction.receiver['id'] === id) ? (
+                            <b className='text-green-400'>
+                              + {transaction.amount}
+                            </b>
+                          ) : (
+                            <b className='text-green-400'>
+                              {transaction.amount}
+                            </b>
+                          )
+                        ) : (
+                          transaction.usdBalance
+                        )}
                       </TableCell>
                       <TableCell>
                         {transaction.targetCurrency
