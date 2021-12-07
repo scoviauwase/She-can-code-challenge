@@ -24,6 +24,7 @@ export const authenicateUser = (values, authState) => async (dispatch) => {
         token: res.data.token,
         user: res.data.data.name,
         message: res.data.message,
+        id: res.data.data.id,
       },
     });
   } catch (error) {

@@ -6,6 +6,7 @@ const initialState: Auth = {
   isLoading: false,
   user: null,
   token: '',
+  id: null,
 };
 
 export default (state = initialState, action) => {
@@ -22,6 +23,7 @@ export default (state = initialState, action) => {
         message: action.payload.message,
         user: action.payload.user,
         token: action.payload.token,
+        id: action.payload.id,
       };
     case types.LOGOUT_SUCCESS:
       return {
@@ -30,6 +32,7 @@ export default (state = initialState, action) => {
         user: null,
         token: '',
         message: '',
+        id: null,
       };
     case types.GET_ERRORS:
       return {

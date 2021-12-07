@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 
-import withProtect from '../../../middlewares/with_protect';
-import prisma from '../../../lib/prisma';
+import withProtect from '../../../../middlewares/with_protect';
+import prisma from '../../../../lib/prisma';
 
 const getAllTransactions = async (req, res: NextApiResponse) => {
   const { method } = req;
