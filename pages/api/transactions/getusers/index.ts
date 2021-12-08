@@ -11,19 +11,21 @@ const getAllTransactions = async (req, res: NextApiResponse) => {
     try {
       const receivedTransactions = await prisma.transaction.findMany({
         where: { receiverId: id },
-        include: { receiver: true },
+        include: { receiver: true, sender: true },
+        orderBy: { createdAt: 'desc' },
       });
 
       const sentTransactions = await prisma.transaction.findMany({
         where: { senderId: id },
-        include: { sender: true },
+        include: { sender: true, receiver: true },
+        orderBy: { createdAt: 'desc' },
       });
 
       res.status(200).json({
         status: 'success',
         message: 'Transactions retrieved successfully',
         data: {
-          transactions: [...receivedTransactions, ...sentTransactions],
+          transactions: [...sentTransactions, ...receivedTransactions],
           receivedTransactions,
           sentTransactions,
         },

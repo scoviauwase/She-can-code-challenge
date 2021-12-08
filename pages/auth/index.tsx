@@ -193,6 +193,7 @@ const Auth = () => {
                       <a
                         className='no-underline cursor-pointer mx-1'
                         onClick={() => {
+                          dispatch(clearErrors());
                           if (authState === AuthState.signup) {
                             setAuthState(AuthState.login);
                           }
@@ -207,6 +208,7 @@ const Auth = () => {
                       <a
                         className='no-underline cursor-pointer mx-1'
                         onClick={() => {
+                          dispatch(clearErrors());
                           if (authState === AuthState.login) {
                             setAuthState(AuthState.signup);
                           }
