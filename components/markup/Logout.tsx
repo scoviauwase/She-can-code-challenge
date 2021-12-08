@@ -33,6 +33,7 @@ const Logout = ({ classes }: Props) => {
             dispatch(logout());
             localStorage.removeItem('token');
             localStorage.removeItem('user');
+            localStorage.removeItem('id');
             setIsShownLogout(!isShownLogout);
           }}
         >

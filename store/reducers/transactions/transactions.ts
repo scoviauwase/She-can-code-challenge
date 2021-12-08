@@ -16,6 +16,7 @@ export default (state = initialState, action) => {
         transactions: action.payload,
         isLoading: false,
         success: false,
+        message: '',
       };
     case types.CREATE_TRANSACTION:
       return {

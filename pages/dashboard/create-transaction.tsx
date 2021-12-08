@@ -5,6 +5,7 @@ import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
 import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlined';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { CircularProgress } from '@mui/material';
 
 import Dashboard from '../../components/markup/DashboardView';
 import TextField from '../../components/reusable/TextField';
@@ -28,8 +29,9 @@ const validationSchema = Yup.object().shape({
 
 const CreateTransaction = () => {
   const [isShownPassword, setIsShownPassword] = useState(false);
+  const [isCreatingTransaction, setIsCreatingTransaction] = useState(false);
   const dispatch = useDispatch();
-  const { transactions, isLoading, message, success } = useSelector(
+  const { transactions, message, success, isLoading } = useSelector(
     (state: AppState) => state.transactions,
     shallowEqual,
   );
@@ -41,18 +43,18 @@ const CreateTransaction = () => {
   const { users } = useSelector((state: AppState) => state.users, shallowEqual);
 
   useEffect(() => {
-    dispatch(clearErrors());
     dispatch(getAllTransactions());
     dispatch(getUsers());
-    dispatch(clearErrors());
   }, []);
 
   const handleCreateTransaction = async (values) => {
+    setIsCreatingTransaction(true);
     dispatch(createTransaction(values));
+    setIsCreatingTransaction(false);
   };
 
   useEffect(() => {
-    if (success) {
+    if (success && !isCreatingTransaction) {
       setTimeout(() => {
         Router.push('/dashboard/transactions');
       }, 300);
@@ -66,12 +68,12 @@ const CreateTransaction = () => {
       ) : (
         <div className='w-11/12 mx-auto flex flex-col justify-center items-center px-5 pt-5'>
           {error.length ? (
-            <div className='w-64 mx-auto'>
+            <div className='w-64 mx-auto text-center'>
               <Alert severity='error' text={error} />
             </div>
           ) : null}
           {message.length ? (
-            <div className='w-64 mx-auto'>
+            <div className='w-64 mx-auto text-center'>
               <Alert severity='success' text={message} />
             </div>
           ) : null}
@@ -182,7 +184,11 @@ const CreateTransaction = () => {
                   // onClick={() => Router.push('/dashboard/transactions')}
                   type='submit'
                 >
-                  Save
+                  {isCreatingTransaction ? (
+                    <CircularProgress color='inherit' size={20} />
+                  ) : (
+                    'Save'
+                  )}
                 </button>
               </form>
             )}

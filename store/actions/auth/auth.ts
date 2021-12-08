@@ -18,6 +18,7 @@ export const authenicateUser = (values, authState) => async (dispatch) => {
     }
     localStorage.setItem('token', res.data.token);
     localStorage.setItem('user', res.data.data.name);
+    localStorage.setItem('id', res.data.data.id);
     dispatch({
       type: types.AUTH_SUCCESS,
       payload: {

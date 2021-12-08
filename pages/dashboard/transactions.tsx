@@ -25,7 +25,7 @@ const Transactions = () => {
     (state: AppState) => state.errors,
     shallowEqual,
   );
-  const { id } = useSelector((state: AppState) => state.auth, shallowEqual);
+
   useEffect(() => {
     dispatch(clearErrors());
     dispatch(getAllTransactions());
@@ -46,7 +46,10 @@ const Transactions = () => {
             <span className='font-bold text-lg ml-3'>Transactions</span>
             <button
               className='focus:outline-none rounded-md px-3 py-2 bg-blue-500 text-white'
-              onClick={() => Router.push('/dashboard/create-transaction')}
+              onClick={() => {
+                Router.push('/dashboard/create-transaction');
+                dispatch(clearErrors());
+              }}
             >
               NEW TRANSACTION
             </button>
@@ -71,7 +74,8 @@ const Transactions = () => {
                     <TableRow key={transaction.id}>
                       <TableCell>{index + 1}</TableCell>
                       <TableCell>
-                        {transaction.sender !== undefined ||
+                        {(transaction.senderId &&
+                          transaction.sender !== undefined) ||
                         (null && Object.keys(transaction.sender).length)
                           ? transaction.sender['name']
                           : null}
@@ -84,17 +88,14 @@ const Transactions = () => {
                       </TableCell>
                       <TableCell>
                         {transaction.amount ? (
-                          transaction.sender !== undefined ||
-                          (null &&
-                            Object.keys(transaction.sender).length &&
-                            transaction.sender['id'] === id) ? (
+                          transaction.senderId &&
+                          transaction.senderId == localStorage.getItem('id') ? (
                             <b className='text-green-400'>
                               - {transaction.amount}
                             </b>
-                          ) : transaction.receiver !== undefined ||
-                            (null &&
-                              Object.keys(transaction.receiver).length &&
-                              transaction.receiver['id'] === id) ? (
+                          ) : transaction.receiverId &&
+                            transaction.receiverId ==
+                              localStorage.getItem('id') ? (
                             <b className='text-green-400'>
                               + {transaction.amount}
                             </b>
